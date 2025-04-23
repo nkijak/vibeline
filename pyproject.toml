@@ -1,0 +1,27 @@
+[project]
+name = "pipeline"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.1.8",
+    "networkx>=3.4.2",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "pytest>=8.3.5",
+    "ruff>=0.11.6",
+]
+
+
+# Optional: Ruff configuration (can be customized further)
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "W", "I", "UP", "PL", "T20"] # Example rule selection
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
