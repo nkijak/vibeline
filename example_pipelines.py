@@ -2,8 +2,8 @@
 import time
 import random
 from pipeline_framework.core import Pipeline, Step, PipelineRunContext
-from pipeline_framework.cli import register_pipeline # Import the registration function
-from pipeline_framework.logging_config import logger # Use the framework logger
+from pipeline_framework.pipeline_registry import register_pipeline
+from pipeline_framework.logging_config import logger
 
 # --- Define Step Functions ---
 # Remember: Step functions should accept PipelineRunContext as an argument

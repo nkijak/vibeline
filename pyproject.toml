@@ -6,16 +6,24 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "click>=8.1.8",
+    "croniter>=6.0.0",
+    "flask>=3.1.0",
     "networkx>=3.4.2",
+    "watchdog>=6.0.0",
 ]
 
 [dependency-groups]
 dev = [
+    "freezegun>=1.5.1",
     "mypy>=1.15.0",
     "pytest>=8.3.5",
+    "pytest-mock>=3.14.0",
+    "requests>=2.32.3",
     "ruff>=0.11.6",
 ]
 
+[tool.uv]
+package = true
 
 # Optional: Ruff configuration (can be customized further)
 [tool.ruff]
@@ -25,3 +33,6 @@ ignore = []
 
 [tool.ruff.format]
 quote-style = "double"
+
+[project.scripts]
+pipeline-cli = "pipeline_framework.cli:cli"
