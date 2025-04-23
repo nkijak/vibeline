@@ -1,4 +1,5 @@
 # pipeline_framework/triggers/webhook.py
+import os
 import logging
 from typing import Optional, Dict, Any, List
 from flask import Flask, request, jsonify # Using Flask for the web server part
