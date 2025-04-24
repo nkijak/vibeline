@@ -28,24 +28,24 @@ class CronTrigger(BaseTrigger):
 
     def check(self) -> Optional[TriggerRunInfo]:
         """Checks if the next cron time has passed since the last check."""
-        now_utc = datetime.now(timezone.utc)
-        # Reset iterator to the last known fire time to find the *next* one after that
+        now = datetime.now(timezone.utc)
+        next_fire_time = self._get_next_fire_time()
+        if now < next_fire_time:
+            return None
+        self.last_scheduled_fire_time = next_fire_time
+        return TriggerRunInfo(
+            pipeline_name=self.pipeline_name,
+            trigger_id=self.trigger_id,
+            parameters={
+                "trigger_id": self.trigger_id,
+                "scheduled_fire_time_utc": next_fire_time.isoformat(),
+            },
+        )
+
+    def _get_next_fire_time(self) -> datetime:
+        """Calculates the next fire time based on the cron expression."""
         iter_from_last = croniter(self.cron_expression, self.last_scheduled_fire_time)
-        next_fire_time = iter_from_last.get_next(datetime)
-
-        if now_utc >= next_fire_time:
-            logger.info(f"CronTrigger '{self.trigger_id}' condition met. Current time {now_utc} >= Next fire time {next_fire_time}")
-            # Update last fire time *before* returning, to prevent rapid re-triggering
-            self.last_scheduled_fire_time = next_fire_time
-            return TriggerRunInfo(
-                pipeline_name=self.pipeline_name,
-                parameters=self.get_run_parameters(fire_time=next_fire_time),
-                trigger_id=self.trigger_id
-            )
-        # else:
-            # logger.debug(f"CronTrigger '{self.trigger_id}' condition not met. Current time {now_utc} < Next fire time {next_fire_time}")
-
-        return None
+        return iter_from_last.get_next(datetime)
 
     def get_run_parameters(self, fire_time: Optional[datetime] = None) -> Dict[str, Any]:
         """Includes the scheduled fire time in the parameters."""

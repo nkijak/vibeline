@@ -1,6 +1,8 @@
 # tests/test_core.py
 import pytest
-from pipeline_framework.core import Pipeline, Step, PipelineRunContext
+from pipeline_framework.core import Pipeline
+from pipeline_framework.errors import StepExecutionError
+from pipeline_framework.models import Step, PipelineRunContext
 
 # Dummy step function for testing
 def dummy_step_func(context: PipelineRunContext):
@@ -60,7 +62,7 @@ def test_step_execute_failure():
     def failing_func(ctx):
         raise RuntimeError("Something went wrong")
     step = Step(name="fail_step", func=failing_func)
-    with pytest.raises(RuntimeError, match="Something went wrong"):
+    with pytest.raises(StepExecutionError, match="Something went wrong"):
         step.execute(context)
     # Check result was not added to context on failure
     assert "fail_step" not in context.results

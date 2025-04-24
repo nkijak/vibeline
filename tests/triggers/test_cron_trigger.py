@@ -42,9 +42,9 @@ def test_cron_trigger_check_met():
         assert run_info.trigger_id == "cron_m"
         assert "scheduled_fire_time_utc" in run_info.parameters
         # Ensure the fire time corresponds to the *start* of the minute
-        assert run_info.parameters["scheduled_fire_time_utc"] == NOW_PLUS_1_MIN.isoformat()
+        assert run_info.parameters["scheduled_fire_time_utc"] == NOW_PLUS_1_MIN.replace(second=0, microsecond=0).isoformat()
         # Check that internal state updated
-        assert trigger.last_scheduled_fire_time == NOW_PLUS_1_MIN
+        assert trigger.last_scheduled_fire_time == NOW_PLUS_1_MIN.replace(second=0, microsecond=0)
 
 @freeze_time(NOW) # Initial time
 def test_cron_trigger_check_met_multiple_times():
@@ -54,7 +54,7 @@ def test_cron_trigger_check_met_multiple_times():
     with freeze_time(NOW_PLUS_1_MIN):
         run_info1 = trigger.check()
         assert run_info1 is not None
-        assert trigger.last_scheduled_fire_time == NOW_PLUS_1_MIN
+        assert trigger.last_scheduled_fire_time == NOW_PLUS_1_MIN.replace(second=0, microsecond=0)
 
     # 2. Check immediately after - should not trigger again
     with freeze_time(NOW_PLUS_1_MIN + timedelta(seconds=1)):
@@ -64,8 +64,8 @@ def test_cron_trigger_check_met_multiple_times():
     with freeze_time(NOW_PLUS_2_MIN):
         run_info2 = trigger.check()
         assert run_info2 is not None
-        assert run_info2.parameters["scheduled_fire_time_utc"] == NOW_PLUS_2_MIN.isoformat()
-        assert trigger.last_scheduled_fire_time == NOW_PLUS_2_MIN
+        assert run_info2.parameters["scheduled_fire_time_utc"] == NOW_PLUS_2_MIN.replace(second=0, microsecond=0).isoformat()
+        assert trigger.last_scheduled_fire_time == NOW_PLUS_2_MIN.replace(second=0, microsecond=0)
 
 @freeze_time(NOW)
 def test_cron_trigger_get_parameters():

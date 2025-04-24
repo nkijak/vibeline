@@ -6,7 +6,8 @@ from typing import List, Dict, Set, Optional # Add Optional and Dict here
 
 import networkx as nx # Using networkx for robust topological sort
 
-from .core import Pipeline, PipelineRunContext, Step
+from .core import Pipeline
+from .models import PipelineRunContext, Step
 from .errors import CyclicDependencyError, StepExecutionError
 from .logging_config import setup_logging # Import setup function
 

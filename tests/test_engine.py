@@ -1,6 +1,7 @@
 # tests/test_engine.py
 import pytest
-from pipeline_framework.core import Pipeline, Step, PipelineRunContext
+from pipeline_framework.core import Pipeline
+from pipeline_framework.models import Step, PipelineRunContext
 from pipeline_framework.engine import PipelineExecutionEngine
 from pipeline_framework.errors import CyclicDependencyError, StepExecutionError
 
